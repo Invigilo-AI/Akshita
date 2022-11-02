@@ -24,9 +24,29 @@ if str(ROOT) not in sys.path:
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 
+global poseweights,device
+
+poseweights='yolov7-w6-pose.pt'
+ #select device
+device = select_device('cpu')
+half = device.type != 'cpu'
+
+# Load model
+model = attempt_load(poseweights, map_location=device)  # load FP32 model
+_ = model.eval()
+
+
 
 @torch.no_grad()
 def process_img(source='im1.jpeg',device='cpu',model=None):
+    '''
+    :input:
+        - source: image name (default value - 'im1.jpeg')
+        - device: type of device (default value - 'cpu')
+        - model : model
+    :output:
+        - image file: image file with keypoints saved in 'saved' folder under the same directory
+    '''
 
 
     output_directory='saved'
@@ -78,6 +98,15 @@ def process_img(source='im1.jpeg',device='cpu',model=None):
 
 
 def process_video(source='football1.mp4',device='cpu',model=None):
+    '''
+    :input:
+        - source: video name (default value - 'football.mp4')
+        - device: type of device (default value - 'cpu')
+        - model : model
+
+    :output:
+        - video file: video file with keypoints
+    '''
     
     #list to store time
     time_list = []
@@ -204,31 +233,30 @@ def process_video(source='football1.mp4',device='cpu',model=None):
 
 
 
-def run(poseweights,media,source,device='cpu'):
+def run(media,source):
 
-                #select device
-                device = select_device(opt.device)
-                half = device.type != 'cpu'
-                
-                # Load model
-                model = attempt_load(poseweights, map_location=device)  # load FP32 model
-                _ = model.eval()
+    '''
+    input:
+        - media : media type (image/video)
+        - source: media filename
+        
+        
+    '''
 
-                if(media=='image'):
-                    
-                    process_img(source,device,model)
-                if(media=='video'):
-                    process_video(source,device,model)
+    if(media=='image'):
+        process_img(source,device,model)
+    if(media=='video'):
+        process_video(source,device,model)
 
 
 
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--poseweights', nargs='+', type=str, default='yolov7-w6-pose.pt', help='model path(s)')
+    # parser.add_argument('--poseweights', nargs='+', type=str, default='yolov7-w6-pose.pt', help='model path(s)')
     parser.add_argument('--media',type=str,help='image/video') 
     parser.add_argument('--source', type=str) 
-    parser.add_argument('--device', type=str, default='cpu', help='cpu/0,1,2,3(gpu)')   #device arugments
+    # parser.add_argument('--device', type=str, default='cpu', help='cpu/0,1,2,3(gpu)')   #device arugments
     opt = parser.parse_args()
     return opt
 
@@ -248,5 +276,5 @@ def main(opt):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    strip_optimizer(opt.device,opt.poseweights)
+    strip_optimizer(device,poseweights)
     main(opt)
