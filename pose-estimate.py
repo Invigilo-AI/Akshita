@@ -3,6 +3,9 @@ import cv2
 import time
 import torch
 import argparse
+import os
+import sys
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 from torchvision import transforms
@@ -12,19 +15,24 @@ from models.experimental import attempt_load
 from utils.plots import output_to_keypoint, plot_skeleton_kpts
 from utils.general import non_max_suppression_kpt, strip_optimizer
 
+
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0]  
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))  # add ROOT to PATH
+ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
+
+
+
 @torch.no_grad()
-def process_img(
-       poseweights='yolov7-w6-pose.pt',
-       source='sample.jpeg',
-       device='cpu'
-):
-    #select device
-    device = select_device(opt.device)
-    half = device.type != 'cpu'
-    
-    # Load model
-    model = attempt_load(poseweights, map_location=device)  # load FP32 model
-    _ = model.eval()
+def process_img(source='im1.jpeg',device='cpu',model=None):
+
+
+    output_directory='saved'
+    if(os.path.exists(output_directory) is False):
+        os.mkdir(output_directory)
+        os.path.join(ROOT,output_directory)
 
     orig_image=cv2.imread(source)
 
@@ -41,9 +49,6 @@ def process_img(
     
     #convert image to float precision (cpu)
     image = image.float()
-    
-    #start time for fps calculation
-    start_time = time.time()
     
     #get predictions
     with torch.no_grad():
@@ -66,28 +71,26 @@ def process_img(
         cv2.rectangle(im0,(int(xmin), int(ymin)),(int(xmax), int(ymax)),color=(255, 0, 0),
             thickness=1,lineType=cv2.LINE_AA)
 
-    cv2.imwrite('save.jpeg',im0)
     
+    cv2.imwrite(f"{output_directory}/{source}",im0)
 
 
 
-def process_video(
-        poseweights='yolov7-w6-pose.pt',
-        source='football1.mp4',
-        device='cpu'):
+
+def process_video(source='football1.mp4',device='cpu',model=None):
     
     #list to store time
     time_list = []
     #list to store fps
     fps_list = []
     
-    #select device
-    device = select_device(opt.device)
-    half = device.type != 'cpu'
+    # #select device
+    # device = select_device(opt.device)
+    # half = device.type != 'cpu'
     
-    # Load model
-    model = attempt_load(poseweights, map_location=device)  # load FP32 model
-    _ = model.eval()
+    # # Load model
+    # model = attempt_load(poseweights, map_location=device)  # load FP32 model
+    # _ = model.eval()
 
     #video path
     video_path = source
@@ -203,10 +206,19 @@ def process_video(
 
 def run(poseweights,media,source,device='cpu'):
 
-               if(media=='image'):
-                   process_img(poseweights,source,device)
-               if(media=='video'):
-                   process_video(poseweights,source,device)
+                #select device
+                device = select_device(opt.device)
+                half = device.type != 'cpu'
+                
+                # Load model
+                model = attempt_load(poseweights, map_location=device)  # load FP32 model
+                _ = model.eval()
+
+                if(media=='image'):
+                    
+                    process_img(source,device,model)
+                if(media=='video'):
+                    process_video(source,device,model)
 
 
 
@@ -215,7 +227,7 @@ def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--poseweights', nargs='+', type=str, default='yolov7-w6-pose.pt', help='model path(s)')
     parser.add_argument('--media',type=str,help='image/video') 
-    parser.add_argument('--source', type=str)
+    parser.add_argument('--source', type=str) 
     parser.add_argument('--device', type=str, default='cpu', help='cpu/0,1,2,3(gpu)')   #device arugments
     opt = parser.parse_args()
     return opt
