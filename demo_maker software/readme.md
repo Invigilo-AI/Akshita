@@ -1,5 +1,5 @@
 # Video Demo Maker
-This Documentation is related to the videodemomaker.py
+This Documentation is related to the videodemo.py
 
 ### Classes and Functions
 This Python file has 0 classes and contains 5 functions
