@@ -5,10 +5,20 @@ This Documentation is related to the videodemomaker.py
 This Python file has 0 classes and contains 5 functions
 
 Function 1: run
+
 Function 2: videomaker
+
 Function 3: showposition
+
 Function 4: labeler
+
 Function 5: writer
+
+Function 6: run
+
+Function 7: parse_opt
+
+Function 8: main
 
 ### Requirements 
     1)opencv-python
