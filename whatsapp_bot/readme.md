@@ -14,7 +14,7 @@ python3 bot.py
 This command is connecting your local port 5000 with a temporary external URL.
 ./ngrok http 5000
 ```
-7)Copy the https:// address from “Forwarding”.<br>
+7)Copy the https:// address from “Forwarding”. The address looks like this: 'https://dea8-2405-201-4011-1136-6997-15bb-ac03-1e9e.in.ngrok.io' <br>
 8)Go to Twilio’s console > Programmable SMS > WhatsApp and in the field “When a message comes in” <br>
 add this URL followed by your endpoint resource (“/reply”).<br>
 9)Save the changes.<br>
