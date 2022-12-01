@@ -11,6 +11,7 @@ import base64
 import time
 from datetime import datetime
 from selenium.webdriver.common.by import By
+import os
 
 class Scraper:
     def __init__(self):
@@ -67,6 +68,8 @@ class Scraper:
             while True:
             
                 try:
+                    if(os.path.exists('images')== False):
+                              os.mkdir('images')
                     i = datetime.today().strftime('%Y_%m_%d_%H_%M_%S')
                     
                     
