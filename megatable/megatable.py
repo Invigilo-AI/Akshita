@@ -2,6 +2,7 @@ import psycopg2
 import boto3
 import os
 from datetime import date
+import zipfile
 
 conn = psycopg2.connect(
     database="testdb", user='postgres', password='123', host='localhost', port='5433'
@@ -145,7 +146,7 @@ def view(table_name):
 def download():
     folder_name = "downloads"  # _where_all_files need to save
 
-    DOWNLOAD_LOCATION_PATH = folder_name + "/"
+    DOWNLOAD_LOCATION_PATH = folder_name
     if not os.path.exists(DOWNLOAD_LOCATION_PATH):
         os.makedirs(DOWNLOAD_LOCATION_PATH)
 
@@ -161,22 +162,20 @@ def download():
             }
         )
 
-    url = url.split("?")[0]
+        if('required_bucket' in my_bucket_object.key):
+            s3_client.download_file('megatabletest',my_bucket_object.key,DOWNLOAD_LOCATION_PATH)
+            zipfile_name = folder_name + '.zip'
+            zipfile_path = zipfile_name
+
+            zipf = zipfile.ZipFile(zipfile_path, 'w', zipfile.ZIP_DEFLATED)
+            zipdir = DOWNLOAD_LOCATION_PATH
+
+            for root, dirs, files in os.walk(zipdir):
+                for file in files:
+                    zipf.write(os.path.join(root, file))
+            zipf.close()
 
 
-    # for l in bucket_list['Contents']:
-    #     key_string = str(l["Key"])
-    #
-    #     s3_path = DOWNLOAD_LOCATION_PATH + key_string.split(Prefix)[-1]
-    #
-    #
-    #     s3_client.download_file('megatabletest', key_string, s3_path)
-        # except Exception as exc:
-        #     if not os.path.exists(makdir):
-        #         try:
-        #             os.makedirs(makdir)
-        #         except Exception as e:
-        #             if exc.errno != errno.EEXIST:
 
 
 # cursor.execute('''SELECT *
