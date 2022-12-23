@@ -38,3 +38,5 @@ Sample queries:<br><br>
     python3 megatable.py
     ```
     
+For more documentation :
+https://docs.google.com/document/d/16IsBlLL3e48tWh0jDiZgcq_qLBwOPqAL9LFm0bJ5rL4/edit?usp=sharing
