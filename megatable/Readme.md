@@ -1,5 +1,5 @@
 ## This Documenatation is for the Megatable POC version 0
-#### Functions used are
+#### Functions built are
 1) Create : Creates schema for a table
 2) Insert : Lets you insert data into the table
 3) Delete : Data from the table can be deleted
