@@ -24,10 +24,13 @@ Sample queries:<br><br>
    ```
     How to Run
     <ul>
-    <li> An environment file is to be made with AWS credentials:
-    1) REGION
-    2) ACCESS KEY
-    3) SECRET KEY
+    <li> An environment file is to be made with postgres db and AWS credentials:<br>
+    1) REGION<br>
+    2) ACCESS KEY<br>
+    3) SECRET KEY<br>
+    4) DATABASE<br>
+    5) USER<br>
+    6) PASSWORD<br>
     </li>
     <li> Once created save it is as .env file in the same directory.
     </li>
