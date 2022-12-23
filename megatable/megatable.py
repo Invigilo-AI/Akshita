@@ -7,7 +7,11 @@ import requests
 import shutil
 
 conn = psycopg2.connect(
-    database="testdb", user='postgres', password='123', host='localhost', port='5433'
+    database=os.getenv("DATABASE"),
+    user=os.getenv("USER"),
+    password=os.getenv("PASSWORD"),
+    host="localhost",
+    port="5433"
 )
 
 cursor = conn.cursor()
@@ -199,11 +203,12 @@ def download(query):
 # view(table_name)
 
 
+
 # create()
 # insert()
 
-query = input()
-download(query)
+# query = input()
+# download(query)
 
 conn.commit()
 conn.close()
