@@ -22,4 +22,19 @@ Sample queries:<br><br>
    on t.frame_id=f.frame_id 
    where t.artifact_type=1;
    ```
+    How to Run
+    <ul>
+    <li> An environment file is to be made with AWS credentials:
+    1) REGION
+    2) ACCESS KEY
+    3) SECRET KEY
+    </li>
+    <li> Once created save it is as .env file in the same directory.
+    </li>
+    <li>Then run the following command:</li><br>
+    </ul>
+    
+    ```
+    python3 megatable.py
+    ```
     
