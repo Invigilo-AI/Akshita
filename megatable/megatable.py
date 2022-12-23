@@ -30,6 +30,8 @@ s3_client = boto3.client(
     aws_secret_access_key=os.getenv('SECRET_KEY')
 )
 
+my_bucket = s3.Bucket('megatabletest')
+
 # Upload data
 '''
 :input: folder - folder name that is to be uploaded on S3
@@ -49,8 +51,7 @@ def upload(folder):
 
 # Insert data into db
 def insert():
-    my_bucket = s3.Bucket('megatabletest')
-
+  
     ann=[]
     img=[]
     for my_bucket_object in my_bucket.objects.all():
