@@ -13,7 +13,7 @@ Sample queries:<br><br>
   
    <i>fetch annotations from training table</i><br>
    ```
-     Select bounding_boxes_url from training;
+   Select bounding_boxes_url from training;
    ```
    <i>fetch frame_urls that are of artifact_type=2 (Hook)</i><br>
    ```
