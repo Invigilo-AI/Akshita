@@ -1,8 +1,8 @@
 ## This Documenatation is for the Megatable POC version 0
 #### Functions built are
-1) Create : Creates schema for a table
-2) Insert : Lets you insert data into the table
-3) Delete : Data from the table can be deleted
+1) Insert : Lets you insert data into the table
+2) Delete : Data from the table can be deleted
+3) Show_Table : Displays the result based on query
 4) Upload : Folders can be uploaded to the S3 bucket
 5) Download : Based on the query entered corresponding images/annotations are downloaded in thw form of a zip file from the S3 bucket<br><br>
 Sample queries:<br><br>
@@ -43,3 +43,4 @@ Sample queries:<br><br>
     
 For more documentation :
 https://docs.google.com/document/d/16IsBlLL3e48tWh0jDiZgcq_qLBwOPqAL9LFm0bJ5rL4/edit?usp=sharing
+
