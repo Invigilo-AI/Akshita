@@ -6,7 +6,8 @@ import shutil
 import os
 from init import s3,s3_client,database_url,conn
 from sqlalchemy.orm import sessionmaker,session
-from  models import *
+from models import Training,Base
+
 from sqlalchemy import create_engine
 
 
@@ -31,14 +32,15 @@ class Megatable:
     def upload(self,folder):
 
         # replace annotations by suitable folder name
-        # for i in range(2, 11):
+
+        count=0
         if (os.path.exists(f'{folder}')):
-            for file in os.listdir('1annotations'):
+            for file in os.listdir(f'{folder}'):
                 if (file):
                     s3.Bucket('megatabletest').upload_file(
                         Filename=f'{folder}/' + file, Key=f'{folder}/' + file)
-                    print("file uploaded")
-
+                    count+=1
+        return count
 
 
     # Insert data into db
@@ -87,9 +89,6 @@ class Megatable:
                 #   frame_url=img[i]
                 # )
                 # s.add(frame)
-
-
-
                 training=Training(
                     frame_id=fid,
                     frame_date=date(2022,12,15),
@@ -109,11 +108,17 @@ class Megatable:
     #Delete data into db
     def delete(self,table_name):
 
-        d = session.query(Training).filter(Training.frame_id == 'f033')
-        session.delete(d)
-        session.commit()
+        d = s.query(Training).filter(Training.frame_id == 'f01').one()
+        s.delete(d)
+        s.commit()
 
+    def update(self,table_name):
 
+        res = s.query(Training).filter(Training.artifact_type == 1).all()
+        for data in res:
+            data.artifact_type = 2
+            s.add(data)
+        s.commit()
 
     # for downloading images/annotations
     '''
@@ -163,8 +168,9 @@ class Megatable:
                             for chunk in r.iter_content(chunk_size=128):
                                 fd.write(chunk)
                         zipf.write(os.path.join(folder_name, file_name))
-                    except:
-                        print("something went wrong")
+                    except Exception as e:
+                        print(e)
+
                     fd.close()
                     i += 1
 
@@ -175,16 +181,15 @@ class Megatable:
                 return "No file exists,check the query"
 
         except Exception as e:
+                return e
 
-               return e
 
+    def show_table(self):
+        try:
+         print(s.query(Training).filter(Training.artifact_type== 1).all())
+        except Exception as e:
+            print(e)
 
 
 
 obj=Megatable()
-obj.delete('Training')
-
-
-# query = input()
-# obj.download(query)
-
