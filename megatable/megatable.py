@@ -26,21 +26,21 @@ class Megatable:
     # Upload data
     '''
     :input: folder - folder name that is to be uploaded on S3
-    :output: Uploads the folder in the S3 bucket
+    :output: Uploads the folder in the S3 bucket and returns the no. of files uploaded
     '''
 
     def upload(self,folder):
 
         # replace annotations by suitable folder name
 
-        count=0
+        files_uploaded=0
         if (os.path.exists(f'{folder}')):
             for file in os.listdir(f'{folder}'):
                 if (file):
                     s3.Bucket('megatabletest').upload_file(
                         Filename=f'{folder}/' + file, Key=f'{folder}/' + file)
-                    count+=1
-        return count
+                    files_uploaded+=1
+        return files_uploaded
 
 
     # Insert data into db
@@ -79,7 +79,7 @@ class Megatable:
             name = ann[i].split("/", 4)[4].split(".")[0]
             ann_name.append(name)
 
-        id = 2445
+        id = 1
         for i in range(len(ann)):
             if ann_name[i] in img_name:
                 fid = f'f0{id}'
@@ -193,3 +193,4 @@ class Megatable:
 
 
 obj=Megatable()
+# Call the functions here as obj.function_name()
