@@ -53,6 +53,12 @@ https://docs.google.com/document/d/16IsBlLL3e48tWh0jDiZgcq_qLBwOPqAL9LFm0bJ5rL4/
 
 How to Test
 
+1)Create a Test_folder in the same directory containing jpg/txt files.
+
+2)Install pytest
+
+3)Run ./test.sh
+
 ```
 pip install pytest
 ./test.sh
